@@ -38,25 +38,27 @@ $ mvn install
 ```
 [...]
 
-import wniemiec.io.java.Terminal;
-import wniemiec.io.java.StandardTerminalBuilder;
+import wniemiec.io.java.JarFileManager;
 
 [...]
 
-Terminal jar-file-manager = StandardTerminalBuilder
-    .getInstance()
-    .outputHandler(message -> { System.out.println("Terminal said " + message); })
-    .outputErrorHandler(message -> { System.err.println("Terminal said " + message); })
-    .build();
+Path jarFile = Path.of("src", "test", "resources", "string-utils.jar");
+Path outputDirectory = Path.of(System.getProperty("java.io.tmpdir"));
 
-jar-file-manager.exec("echo", "hello");
+JarFileManager jarManager = new JarFileManager(jarFile);
+
+Path outputExtraction = jarManager.extractTo(outputDirectory);
+
+System.out.println(Files.exists(outputExtraction.resolve(Path.of("META-INF"))));
+System.out.println(Files.exists(outputExtraction.resolve(Path.of("META-INF", "MANIFEST.MF"))));
+System.out.println(Files.exists(outputExtraction.resolve(Path.of("wniemiec", "util", "java", "StringUtils.class"))));
 ```
 
 ## 📖 Documentation
 |        Property        |Type|Description|Default|
 |----------------|-------------------------------|-----------------------------|--------|
-|implode |`(list: List<T>, delimiter: String): String`|Converts elements of a list into a string by separating each element with a delimiter| - |
-|capitalize |`(text: String): String`|Converts elements of a list into a string by separating each element with a delimiter| - |
+|isJarFile |`(path: Path): boolean`|Checks whether a path is a JAR file.| - |
+|extractTo |`(output: Path): Path`|Extracts JAR content to some location.| - |
 
 
 ## 🚩 Changelog

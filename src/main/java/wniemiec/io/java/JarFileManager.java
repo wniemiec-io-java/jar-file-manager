@@ -63,7 +63,7 @@ public class JarFileManager {
     }
 
     /**
-     * CHecks whether a path is a JAR file.
+     * Checks whether a path is a JAR file.
      * 
      * @param       path Path to be verified
      * 
